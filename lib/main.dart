@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:theme.dart';
-import 'package:screens/home_screen.dart';
-import 'package:screens/welcome_screen.dart';
-import 'package:screens/diagnosis_start_screen.dart';
-import 'package:screens/symptom_screen.dart';
-import 'package:screens/result_screen.dart';
-import 'package:screens/library_screen.dart';
-import 'package:screens/settings_screen.dart';
+import 'package:junco_app/theme.dart';
+import 'package:junco_app/screens/home_screen.dart';
+import 'package:junco_app/screens/welcome_screen.dart';
+import 'package:junco_app/screens/diagnosis_start_screen.dart';
+import 'package:junco_app/screens/symptom_screen.dart';
+import 'package:junco_app/screens/result_screen.dart';
+import 'package:junco_app/screens/library_screen.dart';
+import 'package:junco_app/screens/setting_screen.dart';
+import 'package:junco_app/screens/about_screen.dart';
+import 'package:junco_app/screens/privacy_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -112,6 +114,14 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/settings',
       builder: (context, state) => const SettingsScreen(),
+    ),
+    GoRoute(
+      path: '/about',
+      builder: (context, state) => const AboutScreen(),
+    ),
+    GoRoute(
+      path: '/privacy',
+      builder: (context, state) => const PrivacyScreen(),
     ),
   ],
 );

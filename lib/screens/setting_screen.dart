@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:main.dart'; // Import ThemeState
-import 'package:theme.dart';
-import 'package:widgets/bottom_nav.dart';
-import 'package:widgets/mobile_container.dart';
+import 'package:junco_app/main.dart'; // Import ThemeState
+import 'package:junco_app/theme.dart';
+import 'package:junco_app/widgets/bottom_nav.dart';
+import 'package:junco_app/widgets/mobile_container.dart';
 import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -89,12 +89,12 @@ class SettingsScreen extends StatelessWidget {
                     _SettingsTile(
                       icon: Icons.info_outline,
                       title: 'Tentang JunCo',
-                      onTap: () {},
+                      onTap: () => context.push('/about'),
                     ),
                     _SettingsTile(
                       icon: Icons.policy,
                       title: 'Kebijakan Privasi',
-                      onTap: () {},
+                      onTap: () => context.push('/privacy'),
                     ),
                   ],
                 ),

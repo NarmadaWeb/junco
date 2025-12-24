@@ -352,7 +352,83 @@ const List<Disease> diseases = [
     cause: 'Fisiologis',
   ),
 
-  // 9. Tanaman Sehat
+  // 9. Kutu Putih (Mealybugs)
+  Disease(
+    id: 'mealybugs',
+    name: 'Kutu Putih',
+    scientificName: 'Planococcus spp.',
+    description:
+        'Hama penghisap cairan tanaman yang sering bersembunyi di sela-sela buah, bunga, atau pucuk daun. Mengeluarkan embun madu yang memicu jamur jelaga (warna hitam).',
+    symptomIds: ['fruit_stunted', 'leaf_curling', 'leaf_yellowing'],
+    symptomWeights: {
+      'fruit_stunted': 0.6,
+      'leaf_curling': 0.7,
+      'leaf_yellowing': 0.5,
+    },
+    solution:
+        '''
+**Pengendalian:**
+1.  **Mekanik:** Pangkas bagian tanaman yang terserang parah dan bakar.
+2.  **Hayati:** Gunakan musuh alami seperti kumbang *Cryptolaemus montrouzieri*.
+3.  **Kimia:** Semprot dengan air sabun atau insektisida berbahan aktif imidakloprid jika serangan sangat parah.
+        ''',
+    prevention: 'Jaga kebersihan kebun dan kendalikan semut yang melindungi kutu putih.',
+    riskLevel: 'Sedang',
+    cause: 'Hama (Serangga)',
+  ),
+
+  // 10. Penyakit Antraknosa
+  Disease(
+    id: 'anthracnose',
+    name: 'Antraknosa',
+    scientificName: 'Colletotrichum gloeosporioides',
+    description:
+        'Penyakit jamur yang menyerang daun muda dan buah. Menyebabkan bercak coklat pada daun yang kemudian mengering dan gugur (rontok). Pada buah, menyebabkan busuk kering.',
+    symptomIds: ['leaf_spots_brown', 'leaf_tip_burn', 'leaf_fall', 'fruit_spots_scab'],
+    symptomWeights: {
+      'leaf_spots_brown': 0.8,
+      'leaf_tip_burn': 0.7,
+      'leaf_fall': 0.6,
+      'fruit_spots_scab': 0.5,
+    },
+    solution:
+        '''
+**Pengendalian:**
+1.  **Sanitasi:** Kurangi kelembaban dengan memangkas pohon pelindung.
+2.  **Fungisida:** Semprot fungisida Dithiocarbamate atau Benomyl saat tunas muda muncul.
+        ''',
+    prevention: 'Hindari pemberian pupuk Nitrogen berlebihan yang membuat tanaman sukulen (berair) dan rentan.',
+    riskLevel: 'Sedang',
+    cause: 'Jamur (Fungi)',
+  ),
+
+  // 11. Tupai & Hewan Pengerat
+  Disease(
+    id: 'rodents',
+    name: 'Serangan Tupai/Tikus',
+    scientificName: 'Callosciurus notatus / Rattus spp.',
+    description:
+        'Hama vertebrata yang memakan biji kakao matang dengan melubangi kulit buah. Lubang biasanya besar dan kasar.',
+    symptomIds: ['leaf_holes', 'fruit_rot_watery'], // Gejala tidak langsung, biasanya lubang pada buah (tidak ada di list symptom, pakai pendekatan lain)
+    symptomWeights: {
+       // Karena belum ada gejala spesifik "Lubang Buah Besar", kita gunakan indikasi kerusakan fisik
+       // Ini mungkin butuh penambahan symptom baru, tapi untuk sekarang kita pakai yang mendekati
+       'leaf_holes': 0.2, // Kadang merusak daun untuk sarang
+       'fruit_rot_watery': 0.3, // Bekas gigitan membusuk
+    },
+    solution:
+        '''
+**Pengendalian:**
+1.  **Mekanik:** Berburu atau memasang perangkap.
+2.  **Sanitasi:** Bersihkan area sekitar kebun agar tidak menjadi sarang.
+3.  **Penolakan:** Gunakan bau-bauan yang tidak disukai (misal: kapur barus) atau suara ultrasonik.
+        ''',
+    prevention: 'Jaga jarak dahan antar pohon agar tidak saling bersentuhan (jembatan bagi tupai).',
+    riskLevel: 'Sedang',
+    cause: 'Hama (Vertebrata)',
+  ),
+
+  // 12. Tanaman Sehat
   Disease(
     id: 'healthy',
     name: 'Tanaman Sehat',

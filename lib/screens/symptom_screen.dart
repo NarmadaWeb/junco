@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:data/data.dart';
-import 'package:main.dart';
-import 'package:models/models.dart';
-import 'package:theme.dart';
-import 'package:widgets/mobile_container.dart';
+import 'package:junco_app/data/data.dart';
+import 'package:junco_app/main.dart';
+import 'package:junco_app/models/models.dart';
+import 'package:junco_app/theme.dart';
+import 'package:junco_app/widgets/mobile_container.dart';
 import 'package:provider/provider.dart';
 
 class SymptomScreen extends StatelessWidget {
