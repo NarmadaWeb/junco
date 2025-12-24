@@ -1,43 +1,117 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:theme.dart';
+import 'package:screens/home_screen.dart';
+import 'package:screens/welcome_screen.dart';
+import 'package:screens/diagnosis_start_screen.dart';
+import 'package:screens/symptom_screen.dart';
+import 'package:screens/result_screen.dart';
+import 'package:screens/library_screen.dart';
+import 'package:screens/settings_screen.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(const JunCoApp());
+}
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-  // This widget is the root of your application.
+class DiagnosisState extends ChangeNotifier {
+  List<String> selectedSymptoms = [];
+
+  void addSymptom(String id) {
+    if (!selectedSymptoms.contains(id)) {
+      selectedSymptoms.add(id);
+      notifyListeners();
+    }
+  }
+
+  void removeSymptom(String id) {
+    selectedSymptoms.remove(id);
+    notifyListeners();
+  }
+
+  void clearSymptoms() {
+    selectedSymptoms.clear();
+    notifyListeners();
+  }
+
+  bool isSelected(String id) => selectedSymptoms.contains(id);
+}
+
+class ThemeState extends ChangeNotifier {
+  ThemeMode _themeMode = ThemeMode.system;
+
+  ThemeMode get themeMode => _themeMode;
+
+  void toggleTheme(bool isDark) {
+    _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+    notifyListeners();
+  }
+}
+
+class JunCoApp extends StatelessWidget {
+  const JunCoApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // Application name
-      title: 'Flutter Hello World',
-      // Application theme data, you can set the colors for the application as
-      // you want
-      theme: ThemeData(
-        // useMaterial3: false,
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => DiagnosisState()),
+        ChangeNotifierProvider(create: (_) => ThemeState()),
+      ],
+      child: Consumer<ThemeState>(
+        builder: (context, themeState, child) {
+          return MaterialApp.router(
+            title: 'JunCo - Diagnosis Tanaman Kakao',
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: themeState.themeMode,
+            routerConfig: _router,
+            debugShowCheckedModeBanner: false,
+          );
+        },
       ),
-      // A widget which will be started on application startup
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  final String title;
-  const MyHomePage({super.key, required this.title});  
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // The title text which will be shown on the action bar
-        title: Text(title),
-      ),
-      body: Center(
-        child: Text(
-          'Hello, World!',
-        ),
-      ),
-    );
-  }
-}
+final GoRouter _router = GoRouter(
+  initialLocation: '/',
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const WelcomeScreen(),
+    ),
+    GoRoute(
+      path: '/home',
+      builder: (context, state) => const HomeScreen(),
+    ),
+    GoRoute(
+      path: '/diagnosis-start',
+      builder: (context, state) => const DiagnosisStartScreen(),
+    ),
+    GoRoute(
+      path: '/diagnosis-leaf',
+      builder: (context, state) => const SymptomScreen(type: 'leaf', nextRoute: '/diagnosis-fruit'),
+    ),
+    GoRoute(
+      path: '/diagnosis-fruit',
+      builder: (context, state) => const SymptomScreen(type: 'fruit', nextRoute: '/diagnosis-stem'),
+    ),
+    GoRoute(
+      path: '/diagnosis-stem',
+      builder: (context, state) => const SymptomScreen(type: 'stem', nextRoute: '/diagnosis-result'),
+    ),
+    GoRoute(
+      path: '/diagnosis-result',
+      builder: (context, state) => const ResultScreen(),
+    ),
+    GoRoute(
+      path: '/library',
+      builder: (context, state) => const LibraryScreen(),
+    ),
+    GoRoute(
+      path: '/settings',
+      builder: (context, state) => const SettingsScreen(),
+    ),
+  ],
+);
