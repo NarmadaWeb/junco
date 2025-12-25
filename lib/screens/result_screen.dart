@@ -5,15 +5,60 @@ import 'package:junco_app/models/models.dart';
 import 'package:junco_app/theme.dart';
 import 'package:junco_app/utils/expert_system.dart';
 import 'package:junco_app/widgets/mobile_container.dart';
+import 'package:junco_app/services/database_helper.dart';
 import 'package:provider/provider.dart';
 
-class ResultScreen extends StatelessWidget {
+class ResultScreen extends StatefulWidget {
   const ResultScreen({super.key});
 
   @override
+  State<ResultScreen> createState() => _ResultScreenState();
+}
+
+class _ResultScreenState extends State<ResultScreen> {
+  DiagnosisResult? result;
+
+  @override
+  void initState() {
+    super.initState();
+    // Calculations and saving are done in post-frame to ensure provider access and context is ready if needed,
+    // though initState is also fine for synchronous logic.
+    // However, saving to DB is async.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _calculateAndSave();
+    });
+  }
+
+  Future<void> _calculateAndSave() async {
+    final state = context.read<DiagnosisState>();
+    final calculatedResult = ExpertSystem.diagnose(state.selectedSymptoms);
+
+    setState(() {
+      result = calculatedResult;
+    });
+
+    // Save to DB
+    await DatabaseHelper().insertCheckup({
+      'date': DateTime.now().toIso8601String(),
+      'disease_name': calculatedResult.disease.name,
+      'risk_level': calculatedResult.disease.riskLevel,
+      'confidence': calculatedResult.confidence,
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final state = context.watch<DiagnosisState>();
-    final result = ExpertSystem.diagnose(state.selectedSymptoms);
+    // While loading result
+    if (result == null) {
+       // We can recalculate synchronously for display if we want to avoid loading state flicker
+       // But since we want to save exactly what we display, waiting for _calculateAndSave is safer
+       // OR we calculate synchronously here for UI and save in background.
+       // Let's calculate synchronously for UI stability.
+       final state = context.watch<DiagnosisState>();
+       result = ExpertSystem.diagnose(state.selectedSymptoms);
+    }
+
+    final currentResult = result!;
 
     return MobileContainer(
       child: Stack(
@@ -163,7 +208,7 @@ class ResultScreen extends StatelessWidget {
                               Row(
                                 children: [
                                   Text(
-                                    '${result.confidence}%',
+                                    '${currentResult.confidence}%',
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w900,
                                         fontSize: 18,
@@ -191,13 +236,13 @@ class ResultScreen extends StatelessWidget {
                               Border.all(color: Colors.red.withOpacity(0.2)),
                         ),
                         child: Text(
-                          result.disease.riskLevel == 'Rendah'
+                          currentResult.disease.riskLevel == 'Rendah'
                               ? 'KONDISI AMAN'
                               : 'PENYAKIT TERDETEKSI',
                           style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
-                              color: result.disease.riskLevel == 'Rendah'
+                              color: currentResult.disease.riskLevel == 'Rendah'
                                   ? Colors.green
                                   : Colors.red,
                               letterSpacing: 0.5),
@@ -205,7 +250,7 @@ class ResultScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 12),
                       Text(
-                        result.disease.name,
+                        currentResult.disease.name,
                         style: const TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.w900,
@@ -213,7 +258,7 @@ class ResultScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        result.disease.scientificName,
+                        currentResult.disease.scientificName,
                         style: const TextStyle(
                             fontSize: 14,
                             fontStyle: FontStyle.italic,
@@ -221,7 +266,7 @@ class ResultScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        result.disease.description,
+                        currentResult.disease.description,
                         style: const TextStyle(height: 1.5, fontSize: 14),
                       ),
                       const SizedBox(height: 24),
@@ -232,7 +277,7 @@ class ResultScreen extends StatelessWidget {
                           Expanded(
                             child: _AttributeBox(
                               label: 'Penyebab',
-                              value: result.disease.cause,
+                              value: currentResult.disease.cause,
                               color: Theme.of(context).scaffoldBackgroundColor,
                             ),
                           ),
@@ -240,10 +285,10 @@ class ResultScreen extends StatelessWidget {
                           Expanded(
                             child: _AttributeBox(
                               label: 'Resiko',
-                              value: result.disease.riskLevel,
-                              valueColor: result.disease.riskLevel == 'Tinggi'
+                              value: currentResult.disease.riskLevel,
+                              valueColor: currentResult.disease.riskLevel == 'Tinggi'
                                   ? Colors.red
-                                  : (result.disease.riskLevel == 'Sedang'
+                                  : (currentResult.disease.riskLevel == 'Sedang'
                                       ? Colors.orange
                                       : Colors.green),
                               color: Theme.of(context).scaffoldBackgroundColor,
@@ -258,7 +303,7 @@ class ResultScreen extends StatelessWidget {
                 const SizedBox(height: 24),
 
                 // Solution Section
-                if (result.disease.id != 'healthy') ...[
+                if (currentResult.disease.id != 'healthy') ...[
                   const Text(
                     'Solusi & Pengobatan',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -286,7 +331,7 @@ class ResultScreen extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 16),
-                        Text(result.disease.solution,
+                        Text(currentResult.disease.solution,
                             style: const TextStyle(height: 1.6)),
                       ],
                     ),
@@ -319,7 +364,7 @@ class ResultScreen extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 16),
-                        Text(result.disease.prevention,
+                        Text(currentResult.disease.prevention,
                             style: const TextStyle(height: 1.6)),
                       ],
                     ),
