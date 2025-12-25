@@ -3,9 +3,38 @@ import 'package:go_router/go_router.dart';
 import 'package:junco_app/theme.dart';
 import 'package:junco_app/widgets/bottom_nav.dart';
 import 'package:junco_app/widgets/mobile_container.dart';
+import 'package:junco_app/services/database_helper.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _checkupCount = 0;
+  Map<String, dynamic>? _lastCheckup;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadStats();
+  }
+
+  Future<void> _loadStats() async {
+    final count = await DatabaseHelper().getCheckupCount();
+    final last = await DatabaseHelper().getLastCheckup();
+    if (mounted) {
+      setState(() {
+        _checkupCount = count;
+        _lastCheckup = last;
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -156,8 +185,8 @@ class HomeScreen extends StatelessWidget {
                 child: _StatCard(
                   icon: Icons.analytics,
                   label: 'TOTAL CEK',
-                  value: '15',
-                  subtext: 'Bulan ini',
+                  value: _isLoading ? '-' : '$_checkupCount',
+                  subtext: 'Sepanjang waktu',
                   iconColor: AppTheme.primary,
                 ),
               ),
@@ -166,8 +195,12 @@ class HomeScreen extends StatelessWidget {
                 child: _StatCard(
                   icon: Icons.history,
                   label: 'TERAKHIR',
-                  value: 'Busuk Buah',
-                  subtext: '2 jam lalu',
+                  value: _isLoading ? '-' : (_lastCheckup?['disease_name'] ?? 'Belum ada'),
+                  subtext: _isLoading
+                      ? '-'
+                      : (_lastCheckup != null
+                          ? timeago.format(DateTime.parse(_lastCheckup!['date']))
+                          : 'Mulai cek sekarang'),
                   iconColor: Colors.orange,
                 ),
               ),
@@ -196,7 +229,7 @@ class HomeScreen extends StatelessWidget {
             subtitle: 'Lihat hasil analisis sebelumnya',
             icon: Icons.folder_open,
             color: Colors.blue,
-            onTap: () {},
+            onTap: () => context.push('/history'),
           ),
           const SizedBox(height: 12),
           _MenuTile(

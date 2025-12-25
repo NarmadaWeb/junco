@@ -4,6 +4,7 @@ import 'package:junco_app/main.dart'; // Import ThemeState
 import 'package:junco_app/theme.dart';
 import 'package:junco_app/widgets/bottom_nav.dart';
 import 'package:junco_app/widgets/mobile_container.dart';
+import 'package:junco_app/services/database_helper.dart';
 import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -52,16 +53,71 @@ class SettingsScreen extends StatelessWidget {
                   children: [
                     _SettingsTile(
                       icon: Icons.data_object_sharp,
-                      title: 'Kelola Database Offline',
-                      subtitle: 'Update data penyakit & hama',
-                      onTap: () {},
+                      title: 'Reset Database Offline',
+                      subtitle: 'Hapus dan inisialisasi ulang database',
+                      onTap: () async {
+                        final confirm = await showDialog<bool>(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Reset Database?'),
+                            content: const Text(
+                                'Ini akan menghapus semua data dan membuat database baru. Anda yakin?'),
+                            actions: [
+                              TextButton(
+                                  onPressed: () => Navigator.pop(context, false),
+                                  child: const Text('Batal')),
+                              TextButton(
+                                  onPressed: () => Navigator.pop(context, true),
+                                  child: const Text('Reset',
+                                      style: TextStyle(color: Colors.red))),
+                            ],
+                          ),
+                        );
+
+                        if (confirm == true) {
+                          await DatabaseHelper().deleteDatabaseFile();
+                          // Database will be recreated on next access
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Database berhasil direset.')),
+                            );
+                          }
+                        }
+                      },
                     ),
                     _SettingsTile(
                       icon: Icons.delete_outline,
                       iconColor: Colors.red,
                       title: 'Hapus Semua Riwayat',
                       textColor: Colors.red,
-                      onTap: () {},
+                      onTap: () async {
+                         final confirm = await showDialog<bool>(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Hapus Riwayat?'),
+                            content: const Text(
+                                'Ini akan menghapus semua riwayat diagnosis Anda. Tindakan ini tidak dapat dibatalkan.'),
+                            actions: [
+                              TextButton(
+                                  onPressed: () => Navigator.pop(context, false),
+                                  child: const Text('Batal')),
+                              TextButton(
+                                  onPressed: () => Navigator.pop(context, true),
+                                  child: const Text('Hapus',
+                                      style: TextStyle(color: Colors.red))),
+                            ],
+                          ),
+                        );
+
+                        if (confirm == true) {
+                          await DatabaseHelper().deleteAllCheckups();
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Riwayat berhasil dihapus.')),
+                            );
+                          }
+                        }
+                      },
                     ),
                   ],
                 ),
