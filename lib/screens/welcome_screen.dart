@@ -91,10 +91,11 @@ class WelcomeScreen extends StatelessWidget {
           // Content
           Positioned.fill(
             top: MediaQuery.of(context).size.height * 0.5,
-            child: Padding(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   // Status Card
                   Container(
@@ -182,7 +183,7 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                   ),
 
-                  const Spacer(),
+                  const SizedBox(height: 24),
 
                   // Buttons
                   SizedBox(
@@ -229,7 +230,7 @@ class WelcomeScreen extends StatelessWidget {
 
                   // Footer
                   Text(
-                    'Versi 2.0 • Offline Mode',
+                    'Versi 2.0',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Colors.grey.withOpacity(0.5),
                           fontWeight: FontWeight.bold,

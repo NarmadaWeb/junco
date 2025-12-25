@@ -23,8 +23,9 @@ class Disease {
   final Map<String, double> symptomWeights; // Weight of each symptom (0.1 to 1.0)
   final String solution;
   final String prevention;
-  final String riskLevel; // 'High', 'Medium', 'Low'
+  final String riskLevel; // 'High', 'Medium', 'Low', 'Info', 'Aman'
   final String cause; // 'Fungi', 'Pest', 'Virus', 'Nutrient'
+  final String category; // 'Glosarium', 'Budidaya', 'Obat-obatan'
 
   const Disease({
     required this.id,
@@ -37,6 +38,7 @@ class Disease {
     required this.prevention,
     required this.riskLevel,
     required this.cause,
+    this.category = 'Glosarium', // Default to Glosarium
   });
 }
 

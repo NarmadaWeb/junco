@@ -10,6 +10,7 @@ import 'package:junco_app/screens/library_screen.dart';
 import 'package:junco_app/screens/setting_screen.dart';
 import 'package:junco_app/screens/about_screen.dart';
 import 'package:junco_app/screens/privacy_screen.dart';
+import 'package:junco_app/screens/history_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -122,6 +123,10 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/privacy',
       builder: (context, state) => const PrivacyScreen(),
+    ),
+    GoRoute(
+      path: '/history',
+      builder: (context, state) => const HistoryScreen(),
     ),
   ],
 );
