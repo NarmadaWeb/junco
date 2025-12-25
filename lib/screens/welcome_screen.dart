@@ -230,7 +230,7 @@ class WelcomeScreen extends StatelessWidget {
 
                   // Footer
                   Text(
-                    'Versi 2.0 • Offline Mode',
+                    'Versi 2.0',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Colors.grey.withOpacity(0.5),
                           fontWeight: FontWeight.bold,

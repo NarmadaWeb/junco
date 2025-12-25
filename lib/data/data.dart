@@ -109,6 +109,13 @@ const List<Symptom> symptoms = [
       description: 'Buah mengering, mengecil, dan tetap menggantung di pohon.',
       type: 'fruit',
       icon: 'block'),
+  Symptom(
+      id: 'fruit_holes_large',
+      title: 'Lubang Besar pada Buah',
+      description: 'Terdapat lubang besar dan kasar pada kulit buah yang menembus hingga biji.',
+      type: 'fruit',
+      icon: 'trip_origin'),
+
 
   // --- STEM SYMPTOMS ---
   Symptom(
@@ -141,6 +148,18 @@ const List<Symptom> symptoms = [
       description: 'Kematian ranting dimulai dari ujung menyebar ke pangkal.',
       type: 'stem',
       icon: 'north_east'),
+  Symptom(
+      id: 'stem_mossy',
+      title: 'Berlumut / Licin',
+      description: 'Batang tertutup lumut atau ganggang hijau.',
+      type: 'stem',
+      icon: 'spa'),
+  Symptom(
+      id: 'stem_swollen',
+      title: 'Batang Bengkak',
+      description: 'Terdapat pembengkakan abnormal pada batang atau cabang.',
+      type: 'stem',
+      icon: 'aspect_ratio'),
 ];
 
 // --- DISEASES ---
@@ -174,6 +193,7 @@ const List<Disease> diseases = [
     prevention: 'Gunakan klon tahan (ICCRI 03, ICCRI 04). Jaga kebersihan alat pertanian agar tidak menularkan spora.',
     riskLevel: 'Tinggi',
     cause: 'Jamur (Fungi)',
+    category: 'Glosarium',
   ),
 
   // 2. VSD (Vascular Streak Dieback)
@@ -183,12 +203,13 @@ const List<Disease> diseases = [
     scientificName: 'Ceratobasidium theobromae',
     description:
         'Penyakit pembuluh kayu yang mematikan ranting produktif. Gejala khas adalah daun menguning dengan bercak hijau (green island) dan rontok, menyisakan ranting gundul.',
-    symptomIds: ['leaf_yellowing', 'leaf_fall', 'stem_dieback', 'leaf_spots_brown'],
+    symptomIds: ['leaf_yellowing', 'leaf_fall', 'stem_dieback', 'leaf_spots_brown', 'stem_swollen'],
     symptomWeights: {
       'leaf_yellowing': 0.9,
       'leaf_fall': 0.8,
       'stem_dieback': 1.0, // Sangat khas
       'leaf_spots_brown': 0.3,
+      'stem_swollen': 0.4,
     },
     solution:
         '''
@@ -200,6 +221,7 @@ const List<Disease> diseases = [
     prevention: 'Karantina bibit dari daerah wabah. Gunakan bibit yang sudah teruji tahan VSD.',
     riskLevel: 'Sedang',
     cause: 'Jamur (Fungi)',
+    category: 'Glosarium',
   ),
 
   // 3. Penggerek Buah Kakao (PBK)
@@ -225,6 +247,7 @@ const List<Disease> diseases = [
     prevention: 'Gunakan perangkap feromon seksual untuk menangkap ngengat jantan. Gunakan musuh alami semut hitam.',
     riskLevel: 'Tinggi',
     cause: 'Hama (Serangga)',
+    category: 'Glosarium',
   ),
 
   // 4. Helopeltis (Kepik Penghisap)
@@ -251,6 +274,7 @@ const List<Disease> diseases = [
     prevention: 'Kurangi naungan yang terlalu rimbun karena Helopeltis suka tempat gelap dan lembab.',
     riskLevel: 'Sedang',
     cause: 'Hama (Serangga)',
+    category: 'Glosarium',
   ),
 
   // 5. Kanker Batang (Stem Canker)
@@ -276,6 +300,7 @@ const List<Disease> diseases = [
     prevention: 'Hindari melukai batang saat menyiangi gulma. Kendalikan populasi semut yang bisa membawa tanah berjamur ke batang.',
     riskLevel: 'Tinggi',
     cause: 'Jamur (Fungi)',
+    category: 'Glosarium',
   ),
 
   // 6. Penyakit Jamur Upas (Pink Disease)
@@ -300,6 +325,7 @@ const List<Disease> diseases = [
     prevention: 'Kurangi kelembaban kebun dengan pemangkasan teratur.',
     riskLevel: 'Rendah',
     cause: 'Jamur (Fungi)',
+    category: 'Glosarium',
   ),
 
   // 7. Penggerek Batang (Stem Borer)
@@ -325,6 +351,7 @@ const List<Disease> diseases = [
     prevention: 'Jaga kebersihan kebun dari gulma inang.',
     riskLevel: 'Sedang',
     cause: 'Hama (Serangga)',
+    category: 'Glosarium',
   ),
 
   // 8. Defisiensi Nutrisi (Umum)
@@ -350,6 +377,7 @@ const List<Disease> diseases = [
     prevention: 'Jadwal pemupukan rutin 2x setahun (awal & akhir musim hujan).',
     riskLevel: 'Rendah',
     cause: 'Fisiologis',
+    category: 'Glosarium',
   ),
 
   // 9. Kutu Putih (Mealybugs)
@@ -359,11 +387,12 @@ const List<Disease> diseases = [
     scientificName: 'Planococcus spp.',
     description:
         'Hama penghisap cairan tanaman yang sering bersembunyi di sela-sela buah, bunga, atau pucuk daun. Mengeluarkan embun madu yang memicu jamur jelaga (warna hitam).',
-    symptomIds: ['fruit_stunted', 'leaf_curling', 'leaf_yellowing'],
+    symptomIds: ['fruit_stunted', 'leaf_curling', 'leaf_yellowing', 'stem_mossy'],
     symptomWeights: {
       'fruit_stunted': 0.6,
       'leaf_curling': 0.7,
       'leaf_yellowing': 0.5,
+      'stem_mossy': 0.4, // Jamur jelaga
     },
     solution:
         '''
@@ -375,6 +404,7 @@ const List<Disease> diseases = [
     prevention: 'Jaga kebersihan kebun dan kendalikan semut yang melindungi kutu putih.',
     riskLevel: 'Sedang',
     cause: 'Hama (Serangga)',
+    category: 'Glosarium',
   ),
 
   // 10. Penyakit Antraknosa
@@ -400,6 +430,7 @@ const List<Disease> diseases = [
     prevention: 'Hindari pemberian pupuk Nitrogen berlebihan yang membuat tanaman sukulen (berair) dan rentan.',
     riskLevel: 'Sedang',
     cause: 'Jamur (Fungi)',
+    category: 'Glosarium',
   ),
 
   // 11. Tupai & Hewan Pengerat
@@ -409,12 +440,11 @@ const List<Disease> diseases = [
     scientificName: 'Callosciurus notatus / Rattus spp.',
     description:
         'Hama vertebrata yang memakan biji kakao matang dengan melubangi kulit buah. Lubang biasanya besar dan kasar.',
-    symptomIds: ['leaf_holes', 'fruit_rot_watery'], // Gejala tidak langsung, biasanya lubang pada buah (tidak ada di list symptom, pakai pendekatan lain)
+    symptomIds: ['leaf_holes', 'fruit_rot_watery', 'fruit_holes_large'],
     symptomWeights: {
-       // Karena belum ada gejala spesifik "Lubang Buah Besar", kita gunakan indikasi kerusakan fisik
-       // Ini mungkin butuh penambahan symptom baru, tapi untuk sekarang kita pakai yang mendekati
        'leaf_holes': 0.2, // Kadang merusak daun untuk sarang
        'fruit_rot_watery': 0.3, // Bekas gigitan membusuk
+       'fruit_holes_large': 1.0, // Indikator utama
     },
     solution:
         '''
@@ -426,6 +456,7 @@ const List<Disease> diseases = [
     prevention: 'Jaga jarak dahan antar pohon agar tidak saling bersentuhan (jembatan bagi tupai).',
     riskLevel: 'Sedang',
     cause: 'Hama (Vertebrata)',
+    category: 'Glosarium',
   ),
 
   // 12. Tanaman Sehat
@@ -447,5 +478,83 @@ const List<Disease> diseases = [
     prevention: 'Pertahankan sanitasi dan drainase yang baik.',
     riskLevel: 'Aman',
     cause: '-',
+    category: 'Glosarium',
+  ),
+
+  // --- BUDIDAYA (CULTIVATION) ENTRIES ---
+  Disease(
+    id: 'budidaya_pembibitan',
+    name: 'Pembibitan Kakao',
+    scientificName: 'Panduan Teknis',
+    description: 'Panduan lengkap cara melakukan pembibitan kakao yang baik dan benar.',
+    symptomIds: [],
+    symptomWeights: {},
+    solution: '''
+**Langkah-langkah:**
+1. **Persiapan Lahan:** Bersihkan lahan dari gulma.
+2. **Media Tanam:** Campurkan tanah top soil dan pupuk kandang (2:1).
+3. **Naungan:** Buat naungan atap untuk melindungi bibit muda dari sinar matahari langsung.
+4. **Penyiraman:** Siram bibit pagi dan sore hari.
+    ''',
+    prevention: '-',
+    riskLevel: 'Info',
+    cause: '-',
+    category: 'Budidaya',
+  ),
+   Disease(
+    id: 'budidaya_pemangkasan',
+    name: 'Teknik Pemangkasan',
+    scientificName: 'Panduan Teknis',
+    description: 'Cara memangkas pohon kakao untuk meningkatkan produktivitas.',
+    symptomIds: [],
+    symptomWeights: {},
+    solution: '''
+**Jenis Pemangkasan:**
+1. **Pangkas Bentuk:** Membentuk kerangka pohon (umur 1-2 tahun).
+2. **Pangkas Produksi:** Membuang tunas air dan cabang yang tidak produktif.
+3. **Pangkas Pemeliharaan:** Membuang cabang sakit atau mati.
+    ''',
+    prevention: '-',
+    riskLevel: 'Info',
+    cause: '-',
+    category: 'Budidaya',
+  ),
+
+  // --- OBAT-OBATAN (MEDICINES) ENTRIES ---
+  Disease(
+    id: 'obat_fungisida_tembaga',
+    name: 'Fungisida Tembaga (Copper)',
+    scientificName: 'Bahan Aktif',
+    description: 'Fungisida kontak untuk mengendalikan penyakit jamur seperti Busuk Buah dan Kanker Batang.',
+    symptomIds: [],
+    symptomWeights: {},
+    solution: '''
+**Cara Pakai:**
+- Semprotkan pada seluruh permukaan buah dan batang.
+- Interval 2 minggu sekali saat musim hujan.
+**Contoh Produk:** Nordox, Cupravit.
+    ''',
+    prevention: '-',
+    riskLevel: 'Info',
+    cause: '-',
+    category: 'Obat-obatan',
+  ),
+  Disease(
+    id: 'obat_insektisida_nabati',
+    name: 'Insektisida Nabati Mimba',
+    scientificName: 'Azadirachta indica',
+    description: 'Pestisida alami dari ekstrak daun/biji mimba untuk mengusir hama serangga.',
+    symptomIds: [],
+    symptomWeights: {},
+    solution: '''
+**Pembuatan:**
+1. Tumbuk 1kg daun mimba.
+2. Rendam dalam 10 liter air selama semalam.
+3. Saring dan semprotkan pada tanaman.
+    ''',
+    prevention: '-',
+    riskLevel: 'Info',
+    cause: '-',
+    category: 'Obat-obatan',
   ),
 ];

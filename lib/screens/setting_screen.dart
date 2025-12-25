@@ -53,7 +53,7 @@ class SettingsScreen extends StatelessWidget {
                   children: [
                     _SettingsTile(
                       icon: Icons.data_object_sharp,
-                      title: 'Reset Database Offline',
+                      title: 'Reset Database',
                       subtitle: 'Hapus dan inisialisasi ulang database',
                       onTap: () async {
                         final confirm = await showDialog<bool>(
@@ -187,7 +187,7 @@ class SettingsScreen extends StatelessWidget {
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       Text(
-                        'Versi 1.0.0 (Build 24) - Offline Mode',
+                        'Versi 1.0.0 (Build 24)',
                         style: TextStyle(
                             fontSize: 12, color: Colors.grey.shade500),
                       ),

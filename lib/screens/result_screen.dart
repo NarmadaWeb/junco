@@ -7,6 +7,8 @@ import 'package:junco_app/utils/expert_system.dart';
 import 'package:junco_app/widgets/mobile_container.dart';
 import 'package:junco_app/services/database_helper.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:junco_app/widgets/markdown_text.dart';
 
 class ResultScreen extends StatefulWidget {
   const ResultScreen({super.key});
@@ -21,9 +23,6 @@ class _ResultScreenState extends State<ResultScreen> {
   @override
   void initState() {
     super.initState();
-    // Calculations and saving are done in post-frame to ensure provider access and context is ready if needed,
-    // though initState is also fine for synchronous logic.
-    // However, saving to DB is async.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _calculateAndSave();
     });
@@ -46,14 +45,37 @@ class _ResultScreenState extends State<ResultScreen> {
     });
   }
 
+  void _shareResult() {
+    if (result == null) return;
+
+    final disease = result!.disease;
+    final text = '''
+*HASIL DIAGNOSIS JUNCO*
+--------------------------------
+Penyakit: *${disease.name}*
+Kepercayaan: ${result!.confidence}%
+Resiko: ${disease.riskLevel}
+
+*Deskripsi:*
+${disease.description}
+
+*Solusi:*
+${disease.solution.replaceAll('**', '')}
+
+*Pencegahan:*
+${disease.prevention}
+
+--------------------------------
+Didiagnosa menggunakan Aplikasi JunCo
+''';
+
+    Share.share(text);
+  }
+
   @override
   Widget build(BuildContext context) {
     // While loading result
     if (result == null) {
-       // We can recalculate synchronously for display if we want to avoid loading state flicker
-       // But since we want to save exactly what we display, waiting for _calculateAndSave is safer
-       // OR we calculate synchronously here for UI and save in background.
-       // Let's calculate synchronously for UI stability.
        final state = context.watch<DiagnosisState>();
        result = ExpertSystem.diagnose(state.selectedSymptoms);
     }
@@ -331,8 +353,7 @@ class _ResultScreenState extends State<ResultScreen> {
                           ],
                         ),
                         const SizedBox(height: 16),
-                        Text(currentResult.disease.solution,
-                            style: const TextStyle(height: 1.6)),
+                        MarkdownText(currentResult.disease.solution, scaleFactor: 1.1),
                       ],
                     ),
                   ),
@@ -364,8 +385,7 @@ class _ResultScreenState extends State<ResultScreen> {
                           ],
                         ),
                         const SizedBox(height: 16),
-                        Text(currentResult.disease.prevention,
-                            style: const TextStyle(height: 1.6)),
+                        MarkdownText(currentResult.disease.prevention, scaleFactor: 1.1),
                       ],
                     ),
                   ),
@@ -396,9 +416,7 @@ class _ResultScreenState extends State<ResultScreen> {
 
                 // Actions
                 ElevatedButton.icon(
-                  onPressed: () {
-                    // Normally would go to a detailed treatment guide or product list
-                  },
+                  onPressed: _shareResult,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primary,
                     foregroundColor: AppTheme.backgroundDark,

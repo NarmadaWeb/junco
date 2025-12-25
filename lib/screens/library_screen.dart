@@ -5,6 +5,7 @@ import 'package:junco_app/theme.dart';
 import 'package:junco_app/widgets/bottom_nav.dart';
 import 'package:junco_app/models/models.dart';
 import 'package:junco_app/widgets/mobile_container.dart';
+import 'package:junco_app/widgets/markdown_text.dart';
 
 class LibraryScreen extends StatefulWidget {
   const LibraryScreen({super.key});
@@ -20,10 +21,14 @@ class _LibraryScreenState extends State<LibraryScreen> {
   @override
   Widget build(BuildContext context) {
     // Filter diseases based on search and filter chip
-    // In a real app, this would be more complex
     final filteredDiseases = diseases.where((d) {
-      if (d.id == 'healthy')
-        return false; // Don't show 'Healthy' in library list generally, or maybe separate
+      if (d.id == 'healthy') return false;
+
+      // Filter by category
+      if (_filter != 'Semua' && d.category != _filter) {
+        return false;
+      }
+
       final matchesSearch = d.name
               .toLowerCase()
               .contains(_searchQuery.toLowerCase()) ||
@@ -135,29 +140,27 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Daftar Penyakit',
+                    Text(
+                      _filter == 'Semua' ? 'Daftar Referensi' : 'Daftar $_filter',
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: AppTheme.primary.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Text('Offline',
-                          style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                              color: AppTheme.primary)),
+                          const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
                 const SizedBox(height: 12),
-                ...filteredDiseases
-                    .map((disease) => _DiseaseExpansionTile(disease: disease)),
+                if (filteredDiseases.isEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 32),
+                    child: Center(
+                      child: Text(
+                        'Data tidak ditemukan',
+                        style: TextStyle(color: Colors.grey.shade500),
+                      ),
+                    ),
+                  )
+                else
+                  ...filteredDiseases
+                      .map((disease) => _DiseaseExpansionTile(disease: disease)),
                 const SizedBox(height: 100),
               ],
             ),
@@ -191,19 +194,19 @@ class _DiseaseExpansionTile extends StatelessWidget {
           width: 40,
           height: 40,
           decoration: BoxDecoration(
-            color: AppTheme.primary.withOpacity(0.2),
+            color: _getCategoryColor(disease.category).withOpacity(0.2),
             shape: BoxShape.circle,
           ),
-          child: const Icon(Icons.menu_book, color: AppTheme.primary, size: 20),
+          child: Icon(_getCategoryIcon(disease.category), color: _getCategoryColor(disease.category), size: 20),
         ),
         title: Text(
           disease.name,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
         ),
         subtitle: Text(
-          disease.scientificName,
-          style: const TextStyle(
-              fontSize: 12, fontStyle: FontStyle.italic, color: Colors.grey),
+          disease.category,
+          style: TextStyle(
+              fontSize: 12, color: Colors.grey.shade600),
         ),
         children: [
           Column(
@@ -214,37 +217,64 @@ class _DiseaseExpansionTile extends StatelessWidget {
               Text(disease.description,
                   style: const TextStyle(fontSize: 13, height: 1.5)),
               const SizedBox(height: 16),
-              _SectionTitle('Gejala Utama'),
-              Wrap(
-                spacing: 8,
-                children: disease.symptomIds.map((sid) {
-                  // Find symptom name for chip
-                  final sName = symptoms
-                      .firstWhere((s) => s.id == sid,
-                          orElse: () => Symptom(
-                              id: '',
-                              title: sid,
-                              description: '',
-                              type: '',
-                              icon: ''))
-                      .title;
-                  return Chip(
-                    label: Text(sName, style: const TextStyle(fontSize: 10)),
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    padding: EdgeInsets.zero,
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  );
-                }).toList(),
-              ),
-              const SizedBox(height: 16),
-              _SectionTitle('Pengendalian'),
-              Text(disease.solution,
-                  style: const TextStyle(fontSize: 13, height: 1.5)),
+
+              if (disease.symptomIds.isNotEmpty) ...[
+                 _SectionTitle('Gejala Utama'),
+                Wrap(
+                  spacing: 8,
+                  children: disease.symptomIds.map((sid) {
+                    // Find symptom name for chip
+                    final sName = symptoms
+                        .firstWhere((s) => s.id == sid,
+                            orElse: () => Symptom(
+                                id: '',
+                                title: sid,
+                                description: '',
+                                type: '',
+                                icon: ''))
+                        .title;
+                    return Chip(
+                      label: Text(sName, style: const TextStyle(fontSize: 10)),
+                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                      padding: EdgeInsets.zero,
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(height: 16),
+              ],
+
+              if (disease.solution.isNotEmpty) ...[
+                _SectionTitle('Panduan / Solusi'),
+                MarkdownText(disease.solution),
+                const SizedBox(height: 16),
+              ],
+
+              if (disease.prevention != '-') ...[
+                _SectionTitle('Pencegahan'),
+                MarkdownText(disease.prevention),
+              ]
             ],
           ),
         ],
       ),
     );
+  }
+
+  Color _getCategoryColor(String category) {
+    switch (category) {
+      case 'Budidaya': return Colors.green;
+      case 'Obat-obatan': return Colors.orange;
+      default: return AppTheme.primary;
+    }
+  }
+
+  IconData _getCategoryIcon(String category) {
+    switch (category) {
+      case 'Budidaya': return Icons.agriculture;
+      case 'Obat-obatan': return Icons.medication;
+      default: return Icons.menu_book;
+    }
   }
 }
 
