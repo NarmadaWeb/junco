@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lib/theme.dart';
-import 'package:lib/widgets/bottom_nav.dart';
-import 'package:lib/widgets/mobile_container.dart';
+import 'package:junco_app/theme.dart';
+import 'package:junco_app/widgets/bottom_nav.dart';
+import 'package:junco_app/widgets/mobile_container.dart';
 import 'package:provider/provider.dart';
-import 'package:lib/main.dart'; // To access DiagnosisState
+import 'package:junco_app/main.dart'; // To access DiagnosisState
 
 class DiagnosisStartScreen extends StatelessWidget {
   const DiagnosisStartScreen({super.key});
@@ -24,7 +24,8 @@ class DiagnosisStartScreen extends StatelessWidget {
                 IconButton(
                   onPressed: () => context.go('/home'),
                   icon: const Icon(Icons.arrow_back),
-                  style: IconButton.styleFrom(backgroundColor: Theme.of(context).cardColor),
+                  style: IconButton.styleFrom(
+                      backgroundColor: Theme.of(context).cardColor),
                 ),
                 const Text(
                   'Diagnosis Data',
@@ -32,17 +33,18 @@ class DiagnosisStartScreen extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () {
-                     // Reset diagnosis
-                     context.read<DiagnosisState>().clearSymptoms();
-                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Data diagnosis direset')));
+                    // Reset diagnosis
+                    context.read<DiagnosisState>().clearSymptoms();
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Data diagnosis direset')));
                   },
                   icon: const Icon(Icons.refresh),
-                   style: IconButton.styleFrom(backgroundColor: Theme.of(context).cardColor),
+                  style: IconButton.styleFrom(
+                      backgroundColor: Theme.of(context).cardColor),
                 ),
               ],
             ),
           ),
-          
           Expanded(
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -50,23 +52,31 @@ class DiagnosisStartScreen extends StatelessWidget {
                 const SizedBox(height: 10),
                 RichText(
                   text: TextSpan(
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall
+                        ?.copyWith(fontWeight: FontWeight.w800),
                     children: const [
                       TextSpan(text: 'Pilih Lokasi '),
-                      TextSpan(text: 'Gejala', style: TextStyle(color: AppTheme.primary)),
+                      TextSpan(
+                          text: 'Gejala',
+                          style: TextStyle(color: AppTheme.primary)),
                     ],
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'Pilih bagian tanaman yang menunjukkan tanda-tanda penyakit untuk memulai analisis data offline.',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: Colors.grey),
                 ),
                 const SizedBox(height: 32),
-
                 _CategoryCard(
                   title: 'Gejala pada Daun',
-                  subtitle: 'Bercak, perubahan warna, lubang, atau layu pada dedaunan.',
+                  subtitle:
+                      'Bercak, perubahan warna, lubang, atau layu pada dedaunan.',
                   icon: Icons.spa,
                   bgIcon: Icons.eco,
                   color: Colors.green,
@@ -75,8 +85,10 @@ class DiagnosisStartScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 _CategoryCard(
                   title: 'Gejala pada Buah',
-                  subtitle: 'Busuk buah, pengerasan, atau perubahan bentuk pada kakao.',
-                  icon: Icons.local_dining, // Replaced non-existent nutrition icon
+                  subtitle:
+                      'Busuk buah, pengerasan, atau perubahan bentuk pada kakao.',
+                  icon: Icons
+                      .local_dining, // Replaced non-existent nutrition icon
                   bgIcon: Icons.local_florist, // Fallback
                   color: Colors.orange,
                   onTap: () => context.push('/diagnosis-fruit'),
@@ -84,25 +96,27 @@ class DiagnosisStartScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 _CategoryCard(
                   title: 'Gejala Batang & Akar',
-                  subtitle: 'Kanker batang, retakan kulit, atau masalah pada pangkal akar.',
+                  subtitle:
+                      'Kanker batang, retakan kulit, atau masalah pada pangkal akar.',
                   icon: Icons.forest,
                   bgIcon: Icons.forest,
                   color: Colors.brown,
                   onTap: () => context.push('/diagnosis-stem'),
                 ),
                 const SizedBox(height: 32),
-
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: AppTheme.primary.withOpacity(0.1),
-                    border: Border.all(color: AppTheme.primary.withOpacity(0.2)),
+                    border:
+                        Border.all(color: AppTheme.primary.withOpacity(0.2)),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(Icons.lightbulb, color: AppTheme.primary, size: 20),
+                      const Icon(Icons.lightbulb,
+                          color: AppTheme.primary, size: 20),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Column(
@@ -110,14 +124,18 @@ class DiagnosisStartScreen extends StatelessWidget {
                           children: [
                             const Text(
                               'Tips Diagnosis Akurat',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 14),
                             ),
                             const SizedBox(height: 4),
                             Text(
                               'Periksa tanaman secara menyeluruh sebelum memasukkan data. Semakin detail input, semakin akurat hasil analisis.',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Theme.of(context).textTheme.bodySmall?.color,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.color,
                               ),
                             ),
                           ],
@@ -126,7 +144,7 @@ class DiagnosisStartScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                 const SizedBox(height: 100),
+                const SizedBox(height: 100),
               ],
             ),
           ),

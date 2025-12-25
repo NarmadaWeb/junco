@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:main.dart';
-import 'package:models/models.dart';
-import 'package:theme.dart';
-import 'package:utils/expert_system.dart';
-import 'package:widgets/mobile_container.dart';
+import 'package:junco_app/main.dart';
+import 'package:junco_app/models/models.dart';
+import 'package:junco_app/theme.dart';
+import 'package:junco_app/utils/expert_system.dart';
+import 'package:junco_app/widgets/mobile_container.dart';
 import 'package:provider/provider.dart';
 
 class ResultScreen extends StatelessWidget {
@@ -19,7 +19,7 @@ class ResultScreen extends StatelessWidget {
       child: Stack(
         children: [
           // Background
-           Positioned.fill(
+          Positioned.fill(
             bottom: MediaQuery.of(context).size.height * 0.55,
             child: Container(
               decoration: const BoxDecoration(
@@ -39,7 +39,9 @@ class ResultScreen extends StatelessWidget {
                     end: Alignment.bottomCenter,
                     colors: [
                       Colors.black.withOpacity(0.3),
-                      Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
+                      Theme.of(context)
+                          .scaffoldBackgroundColor
+                          .withOpacity(0.9),
                       Theme.of(context).scaffoldBackgroundColor,
                     ],
                   ),
@@ -47,7 +49,6 @@ class ResultScreen extends StatelessWidget {
               ),
             ),
           ),
-          
           // Header
           Positioned(
             top: 50,
@@ -57,7 +58,8 @@ class ResultScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(20),
@@ -69,7 +71,11 @@ class ResultScreen extends StatelessWidget {
                       SizedBox(width: 8),
                       Text(
                         'JUNCO',
-                        style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.2, fontSize: 12, color: Colors.white),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.2,
+                            fontSize: 12,
+                            color: Colors.white),
                       ),
                     ],
                   ),
@@ -77,7 +83,8 @@ class ResultScreen extends StatelessWidget {
                 CircleAvatar(
                   backgroundColor: Colors.white.withOpacity(0.2),
                   child: IconButton(
-                    icon: const Icon(Icons.help_outline, size: 20, color: Colors.white),
+                    icon: const Icon(Icons.help_outline,
+                        size: 20, color: Colors.white),
                     onPressed: () {},
                   ),
                 ),
@@ -97,7 +104,8 @@ class ResultScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(24),
-                    border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.1)),
+                    border: Border.all(
+                        color: Theme.of(context).dividerColor.withOpacity(0.1)),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.1),
@@ -118,16 +126,23 @@ class ResultScreen extends StatelessWidget {
                             children: [
                               Text(
                                 'STATUS',
-                                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey.shade500, letterSpacing: 1),
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey.shade500,
+                                    letterSpacing: 1),
                               ),
                               const SizedBox(height: 4),
                               const Row(
                                 children: [
-                                  Icon(Icons.check_circle, color: AppTheme.primary, size: 16),
+                                  Icon(Icons.check_circle,
+                                      color: AppTheme.primary, size: 16),
                                   SizedBox(width: 4),
                                   Text(
                                     'Selesai',
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14),
                                   ),
                                 ],
                               ),
@@ -138,17 +153,25 @@ class ResultScreen extends StatelessWidget {
                             children: [
                               Text(
                                 'KEPERCAYAAN',
-                                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey.shade500, letterSpacing: 1),
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey.shade500,
+                                    letterSpacing: 1),
                               ),
                               const SizedBox(height: 4),
                               Row(
                                 children: [
                                   Text(
                                     '${result.confidence}%',
-                                    style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18, color: AppTheme.primary),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 18,
+                                        color: AppTheme.primary),
                                   ),
                                   const SizedBox(width: 2),
-                                  const Icon(Icons.trending_up, color: AppTheme.primary, size: 16),
+                                  const Icon(Icons.trending_up,
+                                      color: AppTheme.primary, size: 16),
                                 ],
                               ),
                             ],
@@ -156,29 +179,45 @@ class ResultScreen extends StatelessWidget {
                         ],
                       ),
                       const Divider(height: 32),
-                      
+
                       // Disease Info
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
                           color: Colors.red.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.red.withOpacity(0.2)),
+                          border:
+                              Border.all(color: Colors.red.withOpacity(0.2)),
                         ),
                         child: Text(
-                          result.disease.riskLevel == 'Rendah' ? 'KONDISI AMAN' : 'PENYAKIT TERDETEKSI',
-                          style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: result.disease.riskLevel == 'Rendah' ? Colors.green : Colors.red, letterSpacing: 0.5),
+                          result.disease.riskLevel == 'Rendah'
+                              ? 'KONDISI AMAN'
+                              : 'PENYAKIT TERDETEKSI',
+                          style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: result.disease.riskLevel == 'Rendah'
+                                  ? Colors.green
+                                  : Colors.red,
+                              letterSpacing: 0.5),
                         ),
                       ),
                       const SizedBox(height: 12),
                       Text(
                         result.disease.name,
-                        style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w900, height: 1.1),
+                        style: const TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.w900,
+                            height: 1.1),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         result.disease.scientificName,
-                        style: const TextStyle(fontSize: 14, fontStyle: FontStyle.italic, color: Colors.grey),
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontStyle: FontStyle.italic,
+                            color: Colors.grey),
                       ),
                       const SizedBox(height: 16),
                       Text(
@@ -202,7 +241,11 @@ class ResultScreen extends StatelessWidget {
                             child: _AttributeBox(
                               label: 'Resiko',
                               value: result.disease.riskLevel,
-                              valueColor: result.disease.riskLevel == 'Tinggi' ? Colors.red : (result.disease.riskLevel == 'Sedang' ? Colors.orange : Colors.green),
+                              valueColor: result.disease.riskLevel == 'Tinggi'
+                                  ? Colors.red
+                                  : (result.disease.riskLevel == 'Sedang'
+                                      ? Colors.orange
+                                      : Colors.green),
                               color: Theme.of(context).scaffoldBackgroundColor,
                             ),
                           ),
@@ -211,9 +254,9 @@ class ResultScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Solution Section
                 if (result.disease.id != 'healthy') ...[
                   const Text(
@@ -226,25 +269,29 @@ class ResultScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.1)),
+                      border: Border.all(
+                          color:
+                              Theme.of(context).dividerColor.withOpacity(0.1)),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Row(
                           children: [
-                            Icon(Icons.medical_services, color: AppTheme.primary),
+                            Icon(Icons.medical_services,
+                                color: AppTheme.primary),
                             SizedBox(width: 12),
-                            Text('Langkah Penanganan', style: TextStyle(fontWeight: FontWeight.bold)),
+                            Text('Langkah Penanganan',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
                           ],
                         ),
                         const SizedBox(height: 16),
-                        Text(result.disease.solution, style: const TextStyle(height: 1.6)),
+                        Text(result.disease.solution,
+                            style: const TextStyle(height: 1.6)),
                       ],
                     ),
                   ),
                   const SizedBox(height: 16),
-                  
                   // Prevention Section
                   const Text(
                     'Pencegahan',
@@ -256,7 +303,9 @@ class ResultScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.1)),
+                      border: Border.all(
+                          color:
+                              Theme.of(context).dividerColor.withOpacity(0.1)),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -265,16 +314,18 @@ class ResultScreen extends StatelessWidget {
                           children: [
                             Icon(Icons.shield, color: Colors.blue),
                             SizedBox(width: 12),
-                            Text('Tips Pencegahan', style: TextStyle(fontWeight: FontWeight.bold)),
+                            Text('Tips Pencegahan',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
                           ],
                         ),
                         const SizedBox(height: 16),
-                        Text(result.disease.prevention, style: const TextStyle(height: 1.6)),
+                        Text(result.disease.prevention,
+                            style: const TextStyle(height: 1.6)),
                       ],
                     ),
                   ),
                 ] else ...[
-                   Container(
+                  Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: Colors.green.withOpacity(0.1),
@@ -283,12 +334,17 @@ class ResultScreen extends StatelessWidget {
                     ),
                     child: const Row(
                       children: [
-                         Icon(Icons.thumb_up, color: Colors.green),
-                         SizedBox(width: 16),
-                         Expanded(child: Text('Tanaman Anda terlihat sehat! Lanjutkan perawatan rutin untuk menjaga kondisinya.', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold))),
+                        Icon(Icons.thumb_up, color: Colors.green),
+                        SizedBox(width: 16),
+                        Expanded(
+                            child: Text(
+                                'Tanaman Anda terlihat sehat! Lanjutkan perawatan rutin untuk menjaga kondisinya.',
+                                style: TextStyle(
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.bold))),
                       ],
                     ),
-                   ),
+                  ),
                 ],
 
                 const SizedBox(height: 32),
@@ -296,16 +352,19 @@ class ResultScreen extends StatelessWidget {
                 // Actions
                 ElevatedButton.icon(
                   onPressed: () {
-                     // Normally would go to a detailed treatment guide or product list
+                    // Normally would go to a detailed treatment guide or product list
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primary,
                     foregroundColor: AppTheme.backgroundDark,
                     minimumSize: const Size(double.infinity, 56),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16)),
                   ),
                   icon: const Icon(Icons.share),
-                  label: const Text('Bagikan Laporan', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  label: const Text('Bagikan Laporan',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
                 const SizedBox(height: 12),
                 OutlinedButton.icon(
@@ -316,11 +375,15 @@ class ResultScreen extends StatelessWidget {
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 56),
                     side: BorderSide(color: Theme.of(context).dividerColor),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                    foregroundColor: Theme.of(context).textTheme.bodyLarge?.color,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16)),
+                    foregroundColor:
+                        Theme.of(context).textTheme.bodyLarge?.color,
                   ),
                   icon: const Icon(Icons.restart_alt),
-                  label: const Text('Beranda', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  label: const Text('Beranda',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
                 const SizedBox(height: 40),
               ],
@@ -352,19 +415,24 @@ class _AttributeBox extends StatelessWidget {
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.1)),
+        border:
+            Border.all(color: Theme.of(context).dividerColor.withOpacity(0.1)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label.toUpperCase(),
-            style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey.shade400),
+            style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey.shade400),
           ),
           const SizedBox(height: 4),
           Text(
             value,
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: valueColor),
+            style: TextStyle(
+                fontSize: 14, fontWeight: FontWeight.bold, color: valueColor),
           ),
         ],
       ),

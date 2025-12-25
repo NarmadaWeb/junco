@@ -14,8 +14,8 @@ class BottomNav extends StatelessWidget {
         color: Theme.of(context).scaffoldBackgroundColor,
         border: Border(
           top: BorderSide(
-            color: Theme.of(context).brightness == Brightness.dark 
-                ? Colors.white.withOpacity(0.05) 
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white.withOpacity(0.05)
                 : Colors.grey.shade200,
           ),
         ),
@@ -75,7 +75,11 @@ class _NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isActive ? AppTheme.primary : (Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade400 : Colors.grey.shade400);
+    final color = isActive
+        ? AppTheme.primary
+        : (Theme.of(context).brightness == Brightness.dark
+            ? Colors.grey.shade400
+            : Colors.grey.shade400);
 
     return InkWell(
       onTap: onTap,

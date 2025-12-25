@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:data/data.dart';
-import 'package:theme.dart';
-import 'package:widgets/bottom_nav.dart';
-import 'package:widgets/mobile_container.dart';
+import 'package:junco_app/data/data.dart';
+import 'package:junco_app/theme.dart';
+import 'package:junco_app/widgets/bottom_nav.dart';
+import 'package:junco_app/models/models.dart';
+import 'package:junco_app/widgets/mobile_container.dart';
 
 class LibraryScreen extends StatefulWidget {
   const LibraryScreen({super.key});
@@ -21,9 +22,12 @@ class _LibraryScreenState extends State<LibraryScreen> {
     // Filter diseases based on search and filter chip
     // In a real app, this would be more complex
     final filteredDiseases = diseases.where((d) {
-      if (d.id == 'healthy') return false; // Don't show 'Healthy' in library list generally, or maybe separate
-      final matchesSearch = d.name.toLowerCase().contains(_searchQuery.toLowerCase()) || 
-                            d.scientificName.toLowerCase().contains(_searchQuery.toLowerCase());
+      if (d.id == 'healthy')
+        return false; // Don't show 'Healthy' in library list generally, or maybe separate
+      final matchesSearch = d.name
+              .toLowerCase()
+              .contains(_searchQuery.toLowerCase()) ||
+          d.scientificName.toLowerCase().contains(_searchQuery.toLowerCase());
       return matchesSearch;
     }).toList();
 
@@ -35,8 +39,11 @@ class _LibraryScreenState extends State<LibraryScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.95),
-              border: Border(bottom: BorderSide(color: Theme.of(context).dividerColor.withOpacity(0.1))),
+              color:
+                  Theme.of(context).scaffoldBackgroundColor.withOpacity(0.95),
+              border: Border(
+                  bottom: BorderSide(
+                      color: Theme.of(context).dividerColor.withOpacity(0.1))),
             ),
             child: SafeArea(
               child: Row(
@@ -44,13 +51,15 @@ class _LibraryScreenState extends State<LibraryScreen> {
                   IconButton(
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () => context.go('/home'),
-                    style: IconButton.styleFrom(backgroundColor: Theme.of(context).cardColor),
+                    style: IconButton.styleFrom(
+                        backgroundColor: Theme.of(context).cardColor),
                   ),
                   const Expanded(
                     child: Text(
                       'Pustaka Referensi',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(width: 40), // Balance back button
@@ -83,7 +92,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
-              children: ['Semua', 'Glosarium', 'Budidaya', 'Obat-obatan'].map((label) {
+              children: ['Semua', 'Glosarium', 'Budidaya', 'Obat-obatan']
+                  .map((label) {
                 final isSelected = _filter == label;
                 return Padding(
                   padding: const EdgeInsets.only(right: 8),
@@ -94,12 +104,20 @@ class _LibraryScreenState extends State<LibraryScreen> {
                     backgroundColor: Theme.of(context).cardColor,
                     selectedColor: AppTheme.primary,
                     labelStyle: TextStyle(
-                      color: isSelected ? AppTheme.backgroundDark : Theme.of(context).textTheme.bodyMedium?.color,
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                      color: isSelected
+                          ? AppTheme.backgroundDark
+                          : Theme.of(context).textTheme.bodyMedium?.color,
+                      fontWeight:
+                          isSelected ? FontWeight.bold : FontWeight.normal,
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
-                      side: BorderSide(color: isSelected ? Colors.transparent : Theme.of(context).dividerColor.withOpacity(0.2)),
+                      side: BorderSide(
+                          color: isSelected
+                              ? Colors.transparent
+                              : Theme.of(context)
+                                  .dividerColor
+                                  .withOpacity(0.2)),
                     ),
                     showCheckmark: false,
                   ),
@@ -107,7 +125,6 @@ class _LibraryScreenState extends State<LibraryScreen> {
               }).toList(),
             ),
           ),
-          
           const SizedBox(height: 16),
 
           // List
@@ -120,22 +137,27 @@ class _LibraryScreenState extends State<LibraryScreen> {
                   children: [
                     const Text(
                       'Daftar Penyakit',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: AppTheme.primary.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: const Text('Offline', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: AppTheme.primary)),
+                      child: const Text('Offline',
+                          style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: AppTheme.primary)),
                     ),
                   ],
                 ),
                 const SizedBox(height: 12),
-                
-                ...filteredDiseases.map((disease) => _DiseaseExpansionTile(disease: disease)),
-
+                ...filteredDiseases
+                    .map((disease) => _DiseaseExpansionTile(disease: disease)),
                 const SizedBox(height: 100),
               ],
             ),
@@ -158,7 +180,8 @@ class _DiseaseExpansionTile extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.1)),
+        border:
+            Border.all(color: Theme.of(context).dividerColor.withOpacity(0.1)),
       ),
       clipBehavior: Clip.antiAlias,
       child: ExpansionTile(
@@ -179,7 +202,8 @@ class _DiseaseExpansionTile extends StatelessWidget {
         ),
         subtitle: Text(
           disease.scientificName,
-          style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: Colors.grey),
+          style: const TextStyle(
+              fontSize: 12, fontStyle: FontStyle.italic, color: Colors.grey),
         ),
         children: [
           Column(
@@ -187,27 +211,35 @@ class _DiseaseExpansionTile extends StatelessWidget {
             children: [
               const Divider(),
               const SizedBox(height: 8),
-              Text(disease.description, style: const TextStyle(fontSize: 13, height: 1.5)),
+              Text(disease.description,
+                  style: const TextStyle(fontSize: 13, height: 1.5)),
               const SizedBox(height: 16),
-              
               _SectionTitle('Gejala Utama'),
               Wrap(
                 spacing: 8,
                 children: disease.symptomIds.map((sid) {
                   // Find symptom name for chip
-                   final sName = symptoms.firstWhere((s) => s.id == sid, orElse: () => Symptom(id: '', title: sid, description: '', type: '', icon: '')).title;
-                   return Chip(
-                     label: Text(sName, style: const TextStyle(fontSize: 10)),
-                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                     padding: EdgeInsets.zero,
-                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                   );
+                  final sName = symptoms
+                      .firstWhere((s) => s.id == sid,
+                          orElse: () => Symptom(
+                              id: '',
+                              title: sid,
+                              description: '',
+                              type: '',
+                              icon: ''))
+                      .title;
+                  return Chip(
+                    label: Text(sName, style: const TextStyle(fontSize: 10)),
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    padding: EdgeInsets.zero,
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  );
                 }).toList(),
               ),
-              
               const SizedBox(height: 16),
               _SectionTitle('Pengendalian'),
-              Text(disease.solution, style: const TextStyle(fontSize: 13, height: 1.5)),
+              Text(disease.solution,
+                  style: const TextStyle(fontSize: 13, height: 1.5)),
             ],
           ),
         ],
@@ -227,8 +259,8 @@ class _SectionTitle extends StatelessWidget {
       child: Text(
         title.toUpperCase(),
         style: TextStyle(
-          fontSize: 10, 
-          fontWeight: FontWeight.bold, 
+          fontSize: 10,
+          fontWeight: FontWeight.bold,
           color: Colors.grey.shade500,
           letterSpacing: 1,
         ),

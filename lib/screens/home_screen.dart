@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:theme.dart';
-import 'package:widgets/bottom_nav.dart';
-import 'package:widgets/mobile_container.dart';
+import 'package:junco_app/theme.dart';
+import 'package:junco_app/widgets/bottom_nav.dart';
+import 'package:junco_app/widgets/mobile_container.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -72,7 +72,7 @@ class HomeScreen extends StatelessWidget {
             ),
             child: Stack(
               children: [
-                 Container(
+                Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     gradient: LinearGradient(
@@ -97,7 +97,8 @@ class HomeScreen extends StatelessWidget {
                           color: AppTheme.primary.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Icon(Icons.add_box, color: AppTheme.primary, size: 28),
+                        child: const Icon(Icons.add_box,
+                            color: AppTheme.primary, size: 28),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,10 +130,13 @@ class HomeScreen extends StatelessWidget {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 12),
                               ),
                               icon: const Icon(Icons.local_hospital),
-                              label: const Text('Analisis Sekarang', style: TextStyle(fontWeight: FontWeight.bold)),
+                              label: const Text('Analisis Sekarang',
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
                             ),
                           ),
                         ],
@@ -181,7 +185,8 @@ class HomeScreen extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {},
-                child: const Text('Lihat Semua', style: TextStyle(color: AppTheme.primary, fontSize: 12)),
+                child: const Text('Lihat Semua',
+                    style: TextStyle(color: AppTheme.primary, fontSize: 12)),
               ),
             ],
           ),

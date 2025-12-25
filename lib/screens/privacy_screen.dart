@@ -15,8 +15,11 @@ class PrivacyScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.95),
-              border: Border(bottom: BorderSide(color: Theme.of(context).dividerColor.withOpacity(0.1))),
+              color:
+                  Theme.of(context).scaffoldBackgroundColor.withOpacity(0.95),
+              border: Border(
+                  bottom: BorderSide(
+                      color: Theme.of(context).dividerColor.withOpacity(0.1))),
             ),
             child: SafeArea(
               child: Row(
@@ -24,7 +27,8 @@ class PrivacyScreen extends StatelessWidget {
                   IconButton(
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () => context.pop(),
-                    style: IconButton.styleFrom(backgroundColor: Theme.of(context).cardColor),
+                    style: IconButton.styleFrom(
+                        backgroundColor: Theme.of(context).cardColor),
                   ),
                   const SizedBox(width: 16),
                   const Text(
@@ -50,27 +54,26 @@ class PrivacyScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 SizedBox(height: 24),
-
                 _PrivacySection(
                   title: '1. Pengumpulan Data',
-                  content: 'JunCo adalah aplikasi yang beroperasi sepenuhnya secara offline (lokal). Kami tidak mengumpulkan, menyimpan, atau mengirimkan data pribadi Anda ke server eksternal manapun. Semua data diagnosis dan riwayat disimpan secara lokal di perangkat Anda.',
+                  content:
+                      'JunCo adalah aplikasi yang beroperasi sepenuhnya secara offline (lokal). Kami tidak mengumpulkan, menyimpan, atau mengirimkan data pribadi Anda ke server eksternal manapun. Semua data diagnosis dan riwayat disimpan secara lokal di perangkat Anda.',
                 ),
-
                 _PrivacySection(
                   title: '2. Penggunaan Kamera & Galeri',
-                  content: 'Aplikasi mungkin meminta izin akses kamera atau galeri hanya jika Anda menggunakan fitur identifikasi visual berbasis gambar (jika tersedia). Gambar yang diambil diproses secara lokal dan tidak diunggah ke cloud.',
+                  content:
+                      'Aplikasi mungkin meminta izin akses kamera atau galeri hanya jika Anda menggunakan fitur identifikasi visual berbasis gambar (jika tersedia). Gambar yang diambil diproses secara lokal dan tidak diunggah ke cloud.',
                 ),
-
                 _PrivacySection(
                   title: '3. Penyimpanan Data Lokal',
-                  content: 'Data riwayat diagnosis Anda disimpan menggunakan penyimpanan lokal perangkat. Jika Anda menghapus aplikasi atau menghapus data aplikasi, riwayat ini akan hilang permanen karena kami tidak memiliki cadangan di server.',
+                  content:
+                      'Data riwayat diagnosis Anda disimpan menggunakan penyimpanan lokal perangkat. Jika Anda menghapus aplikasi atau menghapus data aplikasi, riwayat ini akan hilang permanen karena kami tidak memiliki cadangan di server.',
                 ),
-
                 _PrivacySection(
                   title: '4. Perubahan Kebijakan',
-                  content: 'Kami dapat memperbarui kebijakan privasi ini dari waktu ke waktu. Perubahan akan diberitahukan melalui pembaruan aplikasi.',
+                  content:
+                      'Kami dapat memperbarui kebijakan privasi ini dari waktu ke waktu. Perubahan akan diberitahukan melalui pembaruan aplikasi.',
                 ),
-
                 SizedBox(height: 32),
                 Text(
                   'Hubungi Kami',
@@ -110,7 +113,8 @@ class _PrivacySection extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             content,
-            style: TextStyle(fontSize: 14, color: Colors.grey.shade600, height: 1.5),
+            style: TextStyle(
+                fontSize: 14, color: Colors.grey.shade600, height: 1.5),
           ),
         ],
       ),

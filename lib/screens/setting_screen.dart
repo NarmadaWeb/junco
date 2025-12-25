@@ -19,8 +19,11 @@ class SettingsScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.95),
-              border: Border(bottom: BorderSide(color: Theme.of(context).dividerColor.withOpacity(0.1))),
+              color:
+                  Theme.of(context).scaffoldBackgroundColor.withOpacity(0.95),
+              border: Border(
+                  bottom: BorderSide(
+                      color: Theme.of(context).dividerColor.withOpacity(0.1))),
             ),
             child: SafeArea(
               child: Row(
@@ -28,7 +31,8 @@ class SettingsScreen extends StatelessWidget {
                   IconButton(
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () => context.go('/home'),
-                    style: IconButton.styleFrom(backgroundColor: Theme.of(context).cardColor),
+                    style: IconButton.styleFrom(
+                        backgroundColor: Theme.of(context).cardColor),
                   ),
                   const SizedBox(width: 16),
                   const Text(
@@ -39,7 +43,6 @@ class SettingsScreen extends StatelessWidget {
               ),
             ),
           ),
-          
           Expanded(
             child: ListView(
               padding: const EdgeInsets.symmetric(vertical: 20),
@@ -48,7 +51,7 @@ class SettingsScreen extends StatelessWidget {
                   title: 'Manajemen Data',
                   children: [
                     _SettingsTile(
-                      icon: Icons.database,
+                      icon: Icons.data_object_sharp,
                       title: 'Kelola Database Offline',
                       subtitle: 'Update data penyakit & hama',
                       onTap: () {},
@@ -62,7 +65,6 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                
                 _SettingsSection(
                   title: 'Tampilan',
                   children: [
@@ -77,12 +79,12 @@ class SettingsScreen extends StatelessWidget {
                         activeColor: AppTheme.primary,
                       ),
                       onTap: () {
-                         context.read<ThemeState>().toggleTheme(Theme.of(context).brightness != Brightness.dark);
+                        context.read<ThemeState>().toggleTheme(
+                            Theme.of(context).brightness != Brightness.dark);
                       },
                     ),
                   ],
                 ),
-
                 _SettingsSection(
                   title: 'Tentang Aplikasi',
                   children: [
@@ -98,7 +100,6 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 40),
                 Center(
                   child: Column(
@@ -126,16 +127,19 @@ class SettingsScreen extends StatelessWidget {
                       const SizedBox(height: 12),
                       const Text(
                         'JunCo',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       Text(
                         'Versi 1.0.0 (Build 24) - Offline Mode',
-                        style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+                        style: TextStyle(
+                            fontSize: 12, color: Colors.grey.shade500),
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '© 2024 JunCo Cocoa Analytics',
-                        style: TextStyle(fontSize: 10, color: Colors.grey.shade600),
+                        '© 2025 JunCo Cocoa Analytics',
+                        style: TextStyle(
+                            fontSize: 10, color: Colors.grey.shade600),
                       ),
                     ],
                   ),
@@ -177,7 +181,8 @@ class _SettingsSection extends StatelessWidget {
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.1)),
+            border: Border.all(
+                color: Theme.of(context).dividerColor.withOpacity(0.1)),
           ),
           child: Column(
             children: children,
@@ -211,8 +216,11 @@ class _SettingsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final iColor = iconColor ?? (theme.brightness == Brightness.dark ? AppTheme.primary : AppTheme.primary); // Default primary
-    
+    final iColor = iconColor ??
+        (theme.brightness == Brightness.dark
+            ? AppTheme.primary
+            : AppTheme.primary); // Default primary
+
     return ListTile(
       onTap: onTap,
       leading: Container(
@@ -231,8 +239,12 @@ class _SettingsTile extends StatelessWidget {
           color: textColor,
         ),
       ),
-      subtitle: subtitle != null ? Text(subtitle!, style: const TextStyle(fontSize: 12, color: Colors.grey)) : null,
-      trailing: trailing ?? const Icon(Icons.chevron_right, size: 20, color: Colors.grey),
+      subtitle: subtitle != null
+          ? Text(subtitle!,
+              style: const TextStyle(fontSize: 12, color: Colors.grey))
+          : null,
+      trailing: trailing ??
+          const Icon(Icons.chevron_right, size: 20, color: Colors.grey),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
     );
   }
